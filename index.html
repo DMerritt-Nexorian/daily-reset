@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Reset</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Daily Reset</h1>
+    <p class="subtitle">5-minute morning/evening reset. Top 3. One money. One health. Weekly score.</p>
+    
+    <div class="date-display" id="currentDate"></div>
+    
+    <section>
+      <h2>Top 3 Priorities</h2>
+      <input type="text" id="p1" placeholder="Priority 1">
+      <input type="text" id="p2" placeholder="Priority 2">
+      <input type="text" id="p3" placeholder="Priority 3">
+    </section>
+    
+    <section>
+      <h2>One Money Action</h2>
+      <input type="text" id="money" placeholder="e.g. Transfer $50 to savings, review one subscription">
+    </section>
+    
+    <section>
+      <h2>One Health Action</h2>
+      <input type="text" id="health" placeholder="e.g. 20 min walk, drink 2L water, sleep by 11">
+    </section>
+    
+    <section>
+      <h2>Notes / Log</h2>
+      <textarea id="notes" rows="4" placeholder="What actually happened..."></textarea>
+    </section>
+    
+    <button id="saveBtn">Save Today's Reset</button>
+    
+    <section id="scoreSection" style="display:none;">
+      <h2>Weekly Score</h2>
+      <div id="scoreDisplay"></div>
+      <p>Days completed this week / 7</p>
+    </section>
+    
+    <div class="footer">
+      <button id="viewHistory">View This Week</button>
+      <p>Data stays on your device. No accounts. No cloud.</p>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
