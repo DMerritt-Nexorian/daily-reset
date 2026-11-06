@@ -1,78 +1,115 @@
-const today = new Date().toISOString().split('T')[0];
-document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+function localDateKey(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+const today = localDateKey();
+const $ = (id) => document.getElementById(id);
+
+$("currentDate").textContent = new Date().toLocaleDateString("en-US", {
+  weekday: "long", year: "numeric", month: "long", day: "numeric"
+});
+
+function readData() {
+  try {
+    const value = JSON.parse(localStorage.getItem("dailyReset") || "{}");
+    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  } catch {
+    return {};
+  }
+}
 
 function loadToday() {
-  const data = JSON.parse(localStorage.getItem('dailyReset') || '{}');
-  const day = data[today] || {};
-  document.getElementById('p1').value = day.p1 || '';
-  document.getElementById('p2').value = day.p2 || '';
-  document.getElementById('p3').value = day.p3 || '';
-  document.getElementById('money').value = day.money || '';
-  document.getElementById('health').value = day.health || '';
-  document.getElementById('notes').value = day.notes || '';
+  const day = readData()[today] || {};
+  ["p1", "p2", "p3", "money", "health", "notes"].forEach(id => {
+    $(id).value = typeof day[id] === "string" ? day[id] : "";
+  });
 }
 
 function saveToday() {
-  const data = JSON.parse(localStorage.getItem('dailyReset') || '{}');
+  const data = readData();
   data[today] = {
-    p1: document.getElementById('p1').value.trim(),
-    p2: document.getElementById('p2').value.trim(),
-    p3: document.getElementById('p3').value.trim(),
-    money: document.getElementById('money').value.trim(),
-    health: document.getElementById('health').value.trim(),
-    notes: document.getElementById('notes').value.trim(),
-    completed: true,
-    timestamp: Date.now()
+    p1: $("p1").value.trim(), p2: $("p2").value.trim(), p3: $("p3").value.trim(),
+    money: $("money").value.trim(), health: $("health").value.trim(), notes: $("notes").value.trim(),
+    completed: true, timestamp: Date.now()
   };
-  localStorage.setItem('dailyReset', JSON.stringify(data));
-  alert('Saved. Data stays on this device.');
-  updateScore();
+  try {
+    localStorage.setItem("dailyReset", JSON.stringify(data));
+    updateScore();
+    alert("Saved. Data stays on this device.");
+  } catch {
+    alert("Unable to save. Check available device storage and browser privacy settings.");
+  }
 }
 
 function getWeekDays() {
   const days = [];
   const now = new Date();
-  const dayOfWeek = now.getDay(); // 0 Sun
-  const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const mondayOffset = now.getDay() === 0 ? 6 : now.getDay() - 1;
   for (let i = 0; i < 7; i++) {
-    const d = new Date(now);
-    d.setDate(now.getDate() - mondayOffset + i);
-    days.push(d.toISOString().split('T')[0]);
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - mondayOffset + i);
+    days.push(localDateKey(d));
   }
   return days;
 }
 
+function renderScoreSection() {
+  const section = $("scoreSection");
+  section.replaceChildren();
+  const heading = document.createElement("h2");
+  heading.textContent = "Weekly Score";
+  const score = document.createElement("div");
+  score.id = "scoreDisplay";
+  const data = readData();
+  const completed = getWeekDays().filter(day => data[day] && data[day].completed).length;
+  score.textContent = `${completed} / 7`;
+  const description = document.createElement("p");
+  description.textContent = "Days completed this week / 7";
+  section.append(heading, score, description);
+  section.style.display = "block";
+}
+
 function updateScore() {
-  const data = JSON.parse(localStorage.getItem('dailyReset') || '{}');
-  const week = getWeekDays();
-  let completed = 0;
-  week.forEach(d => {
-    if (data[d] && data[d].completed) completed++;
-  });
-  const scoreEl = document.getElementById('scoreDisplay');
-  scoreEl.textContent = `${completed} / 7`;
-  document.getElementById('scoreSection').style.display = 'block';
+  renderScoreSection();
 }
 
 function viewHistory() {
-  const data = JSON.parse(localStorage.getItem('dailyReset') || '{}');
-  const week = getWeekDays();
-  let html = '<h3>This Week</h3>';
-  week.forEach(d => {
-    const entry = data[d];
-    const dateStr = new Date(d + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  const section = $("scoreSection");
+  const data = readData();
+  section.replaceChildren();
+  const heading = document.createElement("h2");
+  heading.textContent = "This Week";
+  section.appendChild(heading);
+
+  getWeekDays().forEach(day => {
+    const entry = data[day];
+    const row = document.createElement("div");
+    row.style.cssText = "margin:8px 0;padding:8px;border-radius:4px;";
+    const date = new Date(day + "T00:00:00");
+    const label = document.createElement("strong");
+    label.textContent = date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+    row.appendChild(label);
+    const details = document.createElement("p");
     if (entry && entry.completed) {
-      html += `<div style="margin:8px 0; padding:8px; background:#f8f9fa; border-radius:4px;"><strong>${dateStr}</strong><br>Priorities: ${entry.p1 || '-'}, ${entry.p2 || '-'}, ${entry.p3 || '-'}<br>Money: ${entry.money || '-'} | Health: ${entry.health || '-'}</div>`;
+      const values = [entry.p1, entry.p2, entry.p3].map(v => typeof v === "string" && v ? v : "-");
+      details.textContent = `Priorities: ${values.join(", ")} | Money: ${entry.money || "-"} | Health: ${entry.health || "-"}`;
     } else {
-      html += `<div style="margin:8px 0; color:#6c757d;">${dateStr}: —</div>`;
+      details.textContent = "Not completed";
     }
+    row.appendChild(details);
+    section.appendChild(row);
   });
-  document.getElementById('scoreSection').innerHTML = html + '<button onclick="updateScore()">Back to Score</button>';
-  document.getElementById('scoreSection').style.display = 'block';
+
+  const back = document.createElement("button");
+  back.type = "button";
+  back.textContent = "Back to Score";
+  back.addEventListener("click", updateScore);
+  section.appendChild(back);
+  section.style.display = "block";
 }
 
-document.getElementById('saveBtn').addEventListener('click', saveToday);
-document.getElementById('viewHistory').addEventListener('click', viewHistory);
-
+$("saveBtn").addEventListener("click", saveToday);
+$("viewHistory").addEventListener("click", viewHistory);
 loadToday();
 updateScore();
