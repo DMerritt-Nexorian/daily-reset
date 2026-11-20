@@ -9,43 +9,78 @@
 <body>
   <div class="container">
     <h1>Daily Reset</h1>
-    <p class="subtitle">5-minute morning/evening reset. Top 3. One money. One health. Weekly score.</p>
-    
+    <p class="subtitle">Speak or type. Top 3. One money. One health. One grateful thing. Today's line.</p>
     <div class="date-display" id="currentDate"></div>
-    
+    <p class="speech-note" id="speechNote" hidden>This browser cannot take speech. You can still type every line.</p>
+
     <section>
-      <h2>Top 3 Priorities</h2>
-      <input type="text" id="p1" placeholder="Priority 1">
-      <input type="text" id="p2" placeholder="Priority 2">
-      <input type="text" id="p3" placeholder="Priority 3">
+      <h2>Top 3</h2>
+      <div class="row">
+        <input type="text" id="p1" placeholder="Priority 1">
+        <button type="button" class="speak" data-for="p1">Speak</button>
+      </div>
+      <div class="row">
+        <input type="text" id="p2" placeholder="Priority 2">
+        <button type="button" class="speak" data-for="p2">Speak</button>
+      </div>
+      <div class="row">
+        <input type="text" id="p3" placeholder="Priority 3">
+        <button type="button" class="speak" data-for="p3">Speak</button>
+      </div>
     </section>
-    
+
     <section>
-      <h2>One Money Action</h2>
-      <input type="text" id="money" placeholder="e.g. Transfer $50 to savings, review one subscription">
+      <h2>One money action</h2>
+      <div class="row">
+        <input type="text" id="money" placeholder="One money action">
+        <button type="button" class="speak" data-for="money">Speak</button>
+      </div>
     </section>
-    
+
     <section>
-      <h2>One Health Action</h2>
-      <input type="text" id="health" placeholder="e.g. 20 min walk, drink 2L water, sleep by 11">
+      <h2>One health action</h2>
+      <div class="row">
+        <input type="text" id="health" placeholder="One thing for your body">
+        <button type="button" class="speak" data-for="health">Speak</button>
+      </div>
     </section>
-    
+
     <section>
-      <h2>Notes / Log</h2>
-      <textarea id="notes" rows="4" placeholder="What actually happened..."></textarea>
+      <h2>One thing you're grateful for</h2>
+      <div class="row">
+        <input type="text" id="grateful" placeholder="One real thing">
+        <button type="button" class="speak" data-for="grateful">Speak</button>
+      </div>
     </section>
-    
-    <button id="saveBtn">Save Today's Reset</button>
-    
-    <section id="scoreSection" style="display:none;">
-      <h2>Weekly Score</h2>
+
+    <section>
+      <h2>Today's line</h2>
+      <p class="hint">Already filled. Keep it, or speak over it.</p>
+      <div class="row">
+        <input type="text" id="affirmation" placeholder="Today's line">
+        <button type="button" class="speak" data-for="affirmation">Speak</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Notes</h2>
+      <div class="row">
+        <textarea id="notes" rows="4" placeholder="What actually happened"></textarea>
+        <button type="button" class="speak" data-for="notes">Speak</button>
+      </div>
+    </section>
+
+    <button id="saveBtn" type="button">Save today's reset</button>
+
+    <section id="scoreSection">
+      <h2>Weekly score</h2>
       <div id="scoreDisplay"></div>
-      <p>Days completed this week / 7</p>
+      <p>Days saved this week / 7</p>
     </section>
-    
+
     <div class="footer">
-      <button id="viewHistory">View This Week</button>
-      <p>Data stays on your device. No accounts. No cloud.</p>
+      <button id="viewHistory" type="button">View this week</button>
+      <p>Data stays on your device. No accounts. No cloud. Speaking replaces an empty line, and adds to a line you already wrote.</p>
     </div>
   </div>
   <script src="app.js"></script>
