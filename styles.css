@@ -18,10 +18,13 @@ h1 {
   margin: 0 0 8px 0;
   font-size: 28px;
 }
-.subtitle {
+.subtitle, .hint, .speech-note {
   color: #6c757d;
-  margin: 0 0 20px 0;
+  margin: 0 0 12px 0;
   font-size: 15px;
+}
+.speech-note {
+  color: #842029;
 }
 .date-display {
   font-weight: 600;
@@ -39,16 +42,25 @@ h2 {
 input, textarea {
   width: 100%;
   padding: 10px 12px;
-  margin-bottom: 8px;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  font-size: 15px;
+  font-size: 16px;
   box-sizing: border-box;
+  font-family: inherit;
 }
 input:focus, textarea:focus {
   outline: none;
   border-color: #0d6efd;
   box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.row input, .row textarea {
+  flex: 1;
 }
 button {
   background: #0d6efd;
@@ -63,6 +75,19 @@ button {
 }
 button:hover {
   background: #0b5ed7;
+}
+button.speak {
+  width: auto;
+  flex: 0 0 auto;
+  margin-top: 0;
+  background: #fff;
+  color: #0d6efd;
+  border: 1px solid #0d6efd;
+  padding: 10px 12px;
+}
+button.speak.listening {
+  background: #0d6efd;
+  color: #fff;
 }
 .footer {
   margin-top: 30px;
