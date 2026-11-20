@@ -5,31 +5,25 @@ A simple, local-only daily operating checklist.
 - Top 3 priorities
 - One money action
 - One health action
+- One thing you are grateful for
+- A daily line, already filled, which you can keep or replace
 - Notes
 - Weekly completion score
+- Speak on every line. Typing still works. Speech stays in the browser.
 
 Data stays in your browser (localStorage). No accounts, no servers for your data.
 
-## Live Demo
-Deployed on Vercel (link will appear after deploy).
+## Live
+
+https://daily-reset-dmerritt-nexorian.vercel.app
 
 ## Usage
-Open index.html or the deployed URL. Fill it in. Hit Save. Data persists on this device/browser.
 
-## Sales Page Copy
+Open the page. Speak or type. Hit Save. Data persists on this device and browser.
 
-**Problem**  
-You start the day with good intentions and end it wondering where the time and money went. Notes are scattered. Trackers are abandoned after three days.
+## What it is
 
-**What it is**  
-Daily Reset is a single page that forces a 5-minute morning or evening check: your top 3, one money move, one health move, and a log. It calculates a simple weekly score so you can see if anything actually moved.
-
-**What you get**  
-A clean, distraction-free checklist that lives in your browser. Your data never leaves your device. No subscriptions, no logins, no notifications. Just the reset.
+Daily Reset is a single page for a short morning or evening check: your top 3, one money move, one health move, one grateful thing, today's line, and a log. It counts how many days you saved this week.
 
 **Price**  
-$9 one-time. (Or free demo above — paid version adds export and multi-device sync later.)
-
----
-
-Built as a minimal viable product for immediate use and sale.
+$9 one-time.
